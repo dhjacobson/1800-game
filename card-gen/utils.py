@@ -53,3 +53,33 @@ def img_in_box(img, margin=10, outline_width=13, **box_params):
 def crop_to_content(img):
     imageBox = img.getbbox()
     return img.crop(imageBox)
+
+
+def pad_and_paste(img, pasted_img, box=(0, 0), align='center', vertical_align='top'):
+    aw, ah = pasted_img.size
+    iw, ih = img.size
+    x, y = box
+
+    if x < 0:
+        img = ImageOps.pad(img, (iw - x, ih), centering=(1, 0))
+        iw, ih = img.size
+        x = 0
+    if y < 0:
+        img = ImageOps.pad(img, (iw, ih - y), color=(0, 0, 0), centering=(0, 1))
+        iw, ih = img.size
+        y = 0
+    if x + aw > iw:
+        img = ImageOps.pad(img, (x + aw, ih), centering=(0, 0))
+        iw, ih = img.size
+    if y + ah > ih:
+        img = ImageOps.pad(img, (iw, y + ah), centering=(0, 0))
+        iw, ih = img.size
+
+    if align == 'center':
+        x = int((iw - aw) / 2)
+    if vertical_align == 'center':
+        y = int((ih - ah) / 2)
+    paste_mask = pasted_img.convert('RGBA').split()[3].point(lambda a: a * 1.0)
+
+    img.paste(pasted_img, box=(x, y), mask=paste_mask)
+    return img
