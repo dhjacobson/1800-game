@@ -6,6 +6,10 @@ import math
 import json
 
 
+def lighten(color, factor):
+    return tuple((255 - factor * (255 - np.array(color))).astype(int))
+
+
 def wrap_text(text, width, font):
     text_lines = []
     text_line = []

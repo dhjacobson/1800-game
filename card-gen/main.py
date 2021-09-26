@@ -12,7 +12,7 @@ if __name__ == '__main__':
     for card_type, (unique, total) in pd.DataFrame.from_dict(cards, orient='index').groupby('card_type')['count'].agg(['count', 'sum']).iterrows():
         print(f'{card_type}:'.ljust(15) + f'\t{unique} unique; {total} total')
 
-    # cards = {k: v for k, v in cards.items() if k in ('Republic')}
+    cards = {k: v for k, v in cards.items() if k in ('Laissez Faire')}
     for name, specs in reversed(cards.items()):
         print(name)
         c = Card(name, **specs)
@@ -24,7 +24,9 @@ if __name__ == '__main__':
             elif specs['card_sub_type'] == 'industry':
                 defaults['fill_color'] = (236, 239, 255)
         if specs['card_type'] == 'technology':
-            c.add(CornerIconComponent(f"icons/tech/{specs['card_sub_type']}.png"))
+            c.add(CornerIconComponent(f"icons/technology/{specs['card_sub_type']}.png"))
+        if specs['card_type'] == 'policy':
+            c.add(CornerIconComponent(f"icons/policy/{specs['card_sub_type']}.png"))
         if "components" in specs.keys():
             for cc_specs in specs['components']:
                 c.add(CardComponent.from_dict({**defaults, **cc_specs}))
