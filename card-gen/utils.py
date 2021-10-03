@@ -87,3 +87,15 @@ def pad_and_paste(img, pasted_img, box=(0, 0), align='center', vertical_align='t
 
     img.paste(pasted_img, box=(x, y), mask=paste_mask)
     return img
+
+
+def stack_image_xy(img, xy, spacer=0):
+    x, y = xy
+    w = img.width + spacer
+    h = img.height + spacer
+    new_img = Image.new('RGBA', (x*w - spacer, y*h - spacer))
+    for i in range(x):
+        for j in range(y):
+            new_img.paste(img, (i*w, j*h))
+
+    return new_img

@@ -9,16 +9,16 @@ from utils import *
 
 
 class Card:
-    def __init__(self, title, flavor_image=None, corner_icon=None, margin=40, component_spacer=60, **excess_args):
+    def __init__(self, title, flavor_image=None, corner_icon=None, margin=80, component_spacer=60, background_color=(250, 250, 250), border_width=0, **excess_args):
 
         self.width = 825
         self.height = 1125
         self.component_spacer = component_spacer
         self.margin = margin
         self.border_color = (250, 250, 250)
-        self.border_width = 40
+        self.border_width = border_width
 
-        self.background_color = (250, 250, 250)
+        self.background_color = background_color
 
         self.title = title
         self.components = []
@@ -72,7 +72,7 @@ class Card:
                 img = component.draw(img, (self.margin, self.margin), align='left')
                 xcursor += component.width
             else:
-                img = component.draw(img, (xcursor, ycursor))
+                img = component.draw(img, (xcursor, ycursor), margin=self.margin)
                 cw, ch = component.cursor_shift()
                 if self.component_layout == 'vertical_stack':
                     ycursor += ch + self.component_spacer
@@ -152,7 +152,7 @@ class CardComponent:
 
         iw, ih = img.size
         if self.img is None or rebuild:
-            wmax = min(self.wmax, iw - 2*x - 2*margin)
+            wmax = min(self.wmax, iw - x - (x if align == 'center' else 0))
             hmax = min(self.hmax, ih - y - margin)
             self.build(wmax, hmax)
         self.img = crop_to_content(self.img)
@@ -207,7 +207,7 @@ class TitleComponent:
 
 
 class FlavorImageComponent(CardComponent):
-    def __init__(self, fpath, shift_down=0, min_lightness=180, crop=True, scale_vert=None, overflow=False, **generic):
+    def __init__(self, fpath, shift_down=0, min_lightness=180, crop=True, scale_vert=None, overflow=False, stack=None, **generic):
         CardComponent.__init__(self, **generic)
         self.fpath = fpath
         self.min_lightness = min_lightness
@@ -216,6 +216,7 @@ class FlavorImageComponent(CardComponent):
         self.shift_down = shift_down
         self.scale_vert = scale_vert
         self.overflow = overflow
+        self.stack = stack
 
     def build(self, wmax=99999, hmax=99999):
         self.img = Image.new('RGBA', (wmax, hmax), color=(255, 255, 255, 100))
@@ -223,16 +224,20 @@ class FlavorImageComponent(CardComponent):
         fimg = Image.open(self.fpath)
         fimg = ImageOps.grayscale(fimg).convert('RGBA')
 
+        # create duplicates, if necessary
+        if self.stack:
+            fimg = stack_image_xy(fimg, self.stack)
+
+        # get image size, scale vertically if necessary, and get pixel data
         fw, fh = fimg.size
         if self.scale_vert:
             fh = int(fh * self.scale_vert)
             fimg = fimg.resize((fw, fh), Image.ANTIALIAS)
         fimg_data = fimg.load()
 
+        # convert transparent_color to transparent and lighten, if necessary
         lightening_factor = min(1, (255 - self.min_lightness) / (
                     255 - min([fimg_data[i, j][0] for j in range(fh) for i in range(fw)])))
-
-        # convert transparent_color to transparent and lighten, if necessary
         for i in range(fw):
             for j in range(fh):
                 r, g, b, a = fimg_data[i, j]
@@ -261,54 +266,75 @@ class FlavorImageComponent(CardComponent):
         self.img.paste(fimg, (0, self.shift_down))
 
 
-class FullDevCardComponent(CardComponent):
+class DevCardComponent(CardComponent):
 
-    def __init__(self, title, icon, text=None, paymentreward=None, spacer=60, title_height=160, color1=(255, 255, 255), color2=(0, 0, 0), **generic):
+    def __init__(self, title, icon, text=None, paymentreward1=None, paymentreward2=None, spacer=60, title_height=180, color1=(255, 255, 255), color2=(0, 0, 0), era=None, **generic):
         CardComponent.__init__(self, **generic)
-        self.title = DevTitleComponent(title, icon, fill_color=color2, outline_color=lighten(color2, 0.60), **generic)
-        self.paymentreward = DevPaymentRewardComponent(**paymentreward)
+        self.title = DevTitleComponent(title, icon, era=era, fill_color=color2, outline_color=lighten(color2, 0.60), icon_size=(100, 100), **generic)
+        self.paymentreward1 = DevPaymentRewardComponent(**paymentreward1) if paymentreward1 is not None else None
+        self.paymentreward2 = DevPaymentRewardComponent(**{**paymentreward2, 'width': 200}) if paymentreward2 is not None else None
         self.spacer = spacer
         self.title_height = title_height
-        self.textbox = TextBoxComponent(text, fill_color=lighten(color2, 0.15) + (170, ), outline_color=color2 + (170, ), text_color=color2, default_font_size=42, margin=22, shrink_to_fit=False) if text is not None else None
+        self.textbox = TextBoxComponent(text, fill_color=lighten(color2, 0.15) + (170, ), outline_color=color2 + (170, ), text_color=color2, default_font_size=32, margin=22, shrink_to_fit=False) if text is not None else None
 
     def build(self, wmax=99999, hmax=99999):
         self.img = Image.new("RGBA", (wmax, hmax))
 
-        self.paymentreward.build(wmax, hmax)
-        self.paymentreward.draw(self.img, (0, 0), align='left')
+        left_trim, bottom_trim = (0, 0)
 
-        self.title.build(wmax - self.paymentreward.width - self.spacer - 2*self.title.outline_width, self.title_height)
-        self.title.draw(self.img, (self.paymentreward.width + self.spacer, 0), align='left')
+        if self.paymentreward1 is not None:
+            self.paymentreward1.build(wmax, hmax)
+            self.paymentreward1.draw2(self.img)
+            left_trim += self.spacer + self.paymentreward1.payment_width
+            bottom_trim += self.spacer + self.paymentreward1.reward_height
+
+        self.title.build(wmax - left_trim - 2*self.title.outline_width, self.title_height)
+        self.title.draw2(self.img, from_left=left_trim)
+
+        if self.paymentreward2 is not None:
+            self.paymentreward2.build(wmax - left_trim, hmax - bottom_trim - self.title.img.height - 2*self.spacer)
+            self.paymentreward2.draw2(self.img, from_left=left_trim, from_bottom=bottom_trim)
 
         if self.textbox is not None:
-            self.textbox.build(wmax - self.paymentreward.width - self.spacer - 2*self.textbox.outline_width, hmax - self.title.img.height - self.paymentreward.width - 2 * self.spacer - 2*self.textbox.outline_width)
-            self.textbox.draw2(self.img, from_left=self.paymentreward.width + self.spacer, from_top=self.title.img.height + self.spacer)
+            if self.paymentreward1 is not None and self.paymentreward1.payment2 is not None:
+                left_trim += self.paymentreward1.payment2.resource_size[0] + self.paymentreward1.payment2.resource_spacer
+            self.textbox.build(wmax - left_trim - 2*self.textbox.outline_width, hmax - self.title.img.height - bottom_trim - self.spacer - 2*self.textbox.outline_width)
+            self.textbox.draw2(self.img, from_left=left_trim, from_top=self.title.img.height + self.spacer)
 
 
 class DevPaymentRewardComponent(CardComponent):
 
-    def __init__(self, payment, reward, activation=None, location=0, width=125, arrow_width=50, arrow_head_width=120, elbow_radius=90, spacer=30, arrow_color=(20, 20, 20, 220), activation_size=120, **generic):
+    def __init__(self, payment, reward=None, activation=None, payment_width=140, reward_height=200, arrow_width=50, arrow_head_width=120, elbow_radius=90, spacer=30, arrow_color=(20, 20, 20, 220), activation_size=120, **generic):
         CardComponent.__init__(self, **generic)
-        # self.payment = payment
 
+        self.payment2 = None
         if isinstance(payment, str):
-            self.payment = ResourcesComponent(payment, **self.generic, resource_max_rows=len(payment))
+            if len(payment) <= 6:
+                self.payment = ResourcesComponent(payment, resource_max_rows=6)
+            elif len(payment) <=8:
+                self.payment = ResourcesComponent(payment[:5], resource_max_rows=5)
+                self.payment2 = ResourcesComponent(payment[5:], resource_max_rows=3)
+            elif len(payment) <=8:
+                self.payment = ResourcesComponent(payment[:5], resource_max_rows=5)
+                self.payment2 = ResourcesComponent(payment[5:], resource_max_rows=5)
         else:
-            self.payment = CardComponent.from_dict({**self.generic, **payment})
+            self.payment = CardComponent.from_dict(payment)
 
         if isinstance(reward, str):
             self.reward = ImageComponent(reward, **{'margin': 10, 'monochrome': (50, 50, 50), **self.generic})
+        elif reward is None:
+            self.reward = None
         else:
             self.reward = CardComponent.from_dict({**self.generic, **reward})
 
-        self.activation = ImageBoxComponent(f'icons/{activation}.png', shape='circle', margin=4, outline_width=9, **self.generic) if activation else None
+        self.activation = ImageBoxComponent(f'icons/{activation}.png', shape='circle', margin=-9, outline_width=9, **self.generic) if activation else None
         self.activation_size = activation_size
 
-        self.location = location
-        self.width = width
+        self.reward_height = reward_height if self.reward is not None else 0
+        self.payment_width = payment_width if not isinstance(self.payment, ResourcesComponent) else self.payment.resource_size[0]
         self.arrow_width = arrow_width
         self.arrow_head_width = arrow_head_width
-        self.elbow_radius = elbow_radius
+        self.elbow_radius = elbow_radius if elbow_radius is not None else 0
         self.arrow_color = arrow_color
         self.spacer = spacer
 
@@ -316,26 +342,36 @@ class DevPaymentRewardComponent(CardComponent):
         self.img = Image.new("RGBA", (wmax, hmax))
         draw = ImageDraw.Draw(self.img)
 
-        # draw reward
-        self.reward.build(wmax//2, self.width)
-        self.reward.draw2(self.img, from_bottom=0, from_right=0)
+        # draw reward and arrow
+        if self.reward is not None:
+            # draw reward
+            self.reward.build(wmax//2, self.reward_height)
+            self.reward.draw2(self.img, from_bottom=self.reward_height//2 - self.reward.img.height//2, from_right=0)
 
-        # draw arrow
-        arrow_head_base = (wmax - self.reward.img.width - self.spacer - self.arrow_head_width*2//3, hmax-self.width//2)
-        arrow_head_tip = (wmax - self.reward.img.width - self.spacer, hmax-self.width//2)
-        draw.line([(self.width//2, 0), (self.width//2, hmax-self.width//2-self.elbow_radius+self.arrow_width//2)], fill=self.arrow_color, width=self.arrow_width)
-        draw.arc([(self.width//2-self.arrow_width//2, hmax-self.width//2-2*self.elbow_radius), (self.width//2+2*self.elbow_radius, hmax-self.width//2+self.arrow_width//2)], start=90, end=180, fill=self.arrow_color, width=self.arrow_width)
-        draw.line([(self.width//2+self.elbow_radius-self.arrow_width//2, hmax-self.width//2), arrow_head_base], fill=self.arrow_color, width=self.arrow_width)
-        draw.polygon([(arrow_head_base[0], arrow_head_base[1] - self.arrow_head_width//2), (arrow_head_base[0], arrow_head_base[1] + self.arrow_head_width//2), (arrow_head_tip)], fill=self.arrow_color)
+            # draw arrow
+            arrow_head_base = (wmax - self.reward.img.width - self.spacer - self.arrow_head_width*2//3, hmax-self.reward_height//2)
+            arrow_head_tip = (wmax - self.reward.img.width - self.spacer, hmax-self.reward_height//2)
+            if self.elbow_radius > 0:
+                draw.line([(self.payment_width//2, 0), (self.payment_width//2, hmax-self.reward_height//2-self.elbow_radius+self.arrow_width//2)], fill=self.arrow_color, width=self.arrow_width)
+                draw.arc([((self.payment_width - self.arrow_width)//2, hmax-self.reward_height//2-2*self.elbow_radius), (self.payment_width//2+2*self.elbow_radius, hmax-self.reward_height//2+self.arrow_width//2)], start=90, end=180, fill=self.arrow_color, width=self.arrow_width)
+            draw.line([(self.payment_width//2+self.elbow_radius-self.arrow_width//2, hmax-self.reward_height//2), arrow_head_base], fill=self.arrow_color, width=self.arrow_width)
+            draw.polygon([(arrow_head_base[0], arrow_head_base[1] - self.arrow_head_width//2), (arrow_head_base[0], arrow_head_base[1] + self.arrow_head_width//2), (arrow_head_tip)], fill=self.arrow_color)
+
+            # draw activation
+            if self.activation is not None:
+                if self.elbow_radius <= 0:
+                    raise ValueError('Payment-rewards with an activation cost must have an elbow.')
+                activation_diameter = int(min(self.payment_width, self.reward_height) * 2 / np.sqrt(2))
+                self.activation.build(activation_diameter, activation_diameter)
+                self.activation.draw2(self.img, from_bottom=self.reward_height//2 - activation_diameter//2)
 
         # draw payment
-        self.payment.build(wmax, hmax)
-        self.payment.draw(self.img, (self.width//2 - self.payment.img.width//2, 0), align='left')
+        self.payment.build(self.payment_width, hmax)
+        self.payment.draw2(self.img, from_left=self.payment_width // 2 - self.payment.img.width // 2)
 
-        # draw activation
-        if self.activation is not None:
-            self.activation.build(int(self.width*2/np.sqrt(2)), int(self.width*2//np.sqrt(2)))
-            self.activation.draw2(self.img, from_bottom=0)
+        if self.payment2 is not None:
+            self.payment2.build(self.payment_width, hmax)
+            self.payment2.draw2(self.img, from_top=2 * (self.payment.resource_spacer + self.payment.resource_size[1]), from_left=self.payment_width + self.payment.resource_spacer + self.payment_width // 2 - self.payment.img.width // 2)
 
 
 class BoxComponent(CardComponent):
@@ -349,7 +385,7 @@ class BoxComponent(CardComponent):
         self.shape = shape
 
     def build(self, wmax=99999, hmax=99999):
-        img = Image.new("RGBA", (wmax + 2*self.outline_width, hmax + 2*self.outline_width))
+        img = Image.new("RGBA", (wmax, hmax))
         draw = ImageDraw.Draw(img)
 
         if len(self.fill_color) == 4 and len(self.outline_color) == 3:
@@ -358,7 +394,7 @@ class BoxComponent(CardComponent):
         if not self.border_fade:
             outline_colors = [self.outline_color]*self.outline_width
         for i, color in enumerate(outline_colors):
-            bbox = [i, i, wmax + 2*self.outline_width - i, hmax + 2*self.outline_width - i]
+            bbox = [i, i, wmax - i, hmax - i]
             if self.shape in ('circle', 'ellipse'):
                 draw.ellipse(bbox, fill=self.fill_color, outline=tuple(int(c) for c in color))
                 # draw some more ellipses, slightly adjusted to avoid missing pixels
@@ -433,13 +469,15 @@ class ImageBoxComponent(BoxComponent):
 
     def build(self, wmax=99999, hmax=99999):
         ic = ImageComponent(self.img_fpath, **self.generic)
-        iwmax = wmax - 2*self.full_margin
-        ihmax = hmax - 2*self.full_margin
+        iwmax = int((wmax - 2*self.full_margin) * (1 / np.sqrt(2) if self.shape == 'circle' else 1))
+        ihmax = int((hmax - 2*self.full_margin) * (1 / np.sqrt(2) if self.shape == 'circle' else 1))
 
         ic.build(iwmax, ihmax)
-        w, h = ic.img.size
-        super().build(w+self.margin*2, h+self.margin*2)
-        self.img = ic.draw(self.img, (self.full_margin, self.full_margin))
+        iw, ih = ic.img.size
+        bw = int((iw + 2 * self.full_margin) * (np.sqrt(2) if self.shape == 'circle' else 1))
+        bh = int((ih + 2 * self.full_margin) * (np.sqrt(2) if self.shape == 'circle' else 1))
+        super().build(bw, bh)
+        self.img = ic.draw(self.img, (bw//2 - iw//2, bh//2 - ih//2))
 
 
 class TextBoxComponent(BoxComponent):
@@ -447,7 +485,7 @@ class TextBoxComponent(BoxComponent):
     def __init__(self, text, margin=20, default_font_size=48, spacing=12, font='Merriweather-Bold.ttf', text_color=(0, 0, 0), extra_right_margin=0, shrink_to_fit=True, align='left', vertical_align='top', **generic):
         BoxComponent.__init__(self, **generic)
         self.text = text
-        self.margin = margin
+        self.margin = margin + self.outline_width
         self.extra_right_margin = extra_right_margin
         self.default_font_size = default_font_size
         self.spacing = spacing
@@ -462,7 +500,7 @@ class TextBoxComponent(BoxComponent):
     def adjust_font_size(self):
         if self.font_size is None:
             self.font_size = self.default_font_size
-        if self.font_size >= 24:
+        if self.font_size >= 20:
             self.font_size -= 2
         # elif self.font_size >= 12:
         #     self.font_size -= 2
@@ -470,9 +508,12 @@ class TextBoxComponent(BoxComponent):
             raise ValueError(f'Not enough space on card to print with font size >= 24 for {type(self)}.')
 
     def build(self, wmax=9999, hmax=9999):
+        if not isinstance(self.text, str):
+            return TypeError(f'Text `{self.text}` is not str.')
+
         junk_img = Image.new('RGBA', (wmax, hmax))
         draw = ImageDraw.Draw(junk_img)
-        filler = '-----'
+        filler = '--'
 
         text_to_write = re.sub(r'\[\[\w+\]\]', filler, self.text)
 
@@ -495,7 +536,7 @@ class TextBoxComponent(BoxComponent):
         i = 0
         for line_n, line in enumerate(text_lines):
             line_parts = re.split(filler, line)
-            x = self.outline_width + self.margin
+            x = self.margin
             for line_part in line_parts[:-1]:
                 lw = draw.textsize(line_part, font=font, spacing=self.spacing)[0]
                 lh = draw.textsize(' ', font=font, spacing=self.spacing)[1]
@@ -507,38 +548,43 @@ class TextBoxComponent(BoxComponent):
                 icon.build(lh+self.spacing, lh+self.spacing)
                 iimg = icon.img
                 x += lw + int(draw.textsize(' ', font=font)[0] / 2)
-                self.img.paste(iimg, box=(x, self.outline_width + self.margin + line_n*(lh+self.spacing)), mask=iimg.convert('RGBA'))
-                x += int(draw.textsize(filler + ' ', font=font)[0])
+                self.img.paste(iimg, box=(x, self.margin + line_n*(lh+self.spacing)), mask=iimg.convert('RGBA'))
+                x += int(draw.textsize(filler, font=font)[0])
                 i += 1
 
-        x = self.outline_width + self.margin
-        y = self.outline_width + self.margin
+        x = self.margin
+        y = self.margin
         if self.align == 'center':
-            x = wmax//2 - tw//2
+            x = self.img.width//2 - tw//2
         elif self.align == 'right':
-            x = wmax - tw - self.margin
+            x = self.img.width - tw - self.margin
         if self.vertical_align == 'center':
-            y = hmax//2 - th//2
+            y = self.img.height//2 - th//2
         elif self.vertical_align == 'bottom':
-            y = hmax - th - self.margin
-        draw.text((x, y), '\n'.join(text_lines).replace(filler, '      '), fill=self.text_color, font=font,
-                  spacing=self.spacing)
+            y = self.img.height - th - self.margin
+        draw.text((x, y), '\n'.join(text_lines).replace(filler, '      '), fill=self.text_color, font=font, spacing=self.spacing, align='left')
 
 
 class DevTitleComponent(TextBoxComponent):
 
-    def __init__(self, title, icon, icon_size=(90, 90), margin=25, **generic):
+    def __init__(self, title, icon, era=None, icon_size=(90, 90), margin=30, **generic):
         TextBoxComponent.__init__(self, title, default_font_size=64, shrink_to_fit=False, margin=margin, extra_right_margin=icon_size[0] + 2*margin
                                   , text_color=(255, 255, 255), outline_width=10, border_fade=False, vertical_align='bottom', **generic)
         self.title = title
         self.icon = ImageComponent(icon, monochrome=(255, 255, 255))
         self.icon_size = icon_size
         self.fill_color += (187, )
+        self.era = era
 
     def build(self, wmax=99999, hmax=99999):
         super().build(wmax, hmax)
         self.icon.build(*self.icon_size)
-        self.icon.draw2(self.img, from_top='center', from_right=self.margin+self.outline_width)
+        self.icon.draw2(self.img, from_top='center', from_right=self.margin)
+        if self.era is not None:
+            era_textbox = TextBoxComponent(self.era, margin=0, default_font_size=32, fill_color=(0, 0, 0, 0), text_color=(255, 255, 255))
+            era_textbox.build(wmax, hmax)
+            era_textbox.draw2(self.img, from_right=20 - era_textbox.img.width//2, from_bottom=20 - era_textbox.img.height//2)
+
 
 
 class ArrowImageComponent(CardComponent):
@@ -596,6 +642,14 @@ class ResourcesComponent(CardComponent):
         self.resource_size = resource_size
         self.resource_max_rows = resource_max_rows
 
+    @property
+    def width(self):
+        return (self.resource_size[0] + self.resource_spacer) * math.ceil(len(self.resources) / self.resource_max_rows) - self.resource_spacer
+
+    @property
+    def height(self):
+        return (self.resource_size[0] + self.resource_spacer) * min(len(self.resources), self.resource_max_rows) - self.resource_spacer
+
     def build(self, wmax=99999, hmax=99999):
         self.img = Image.new("RGBA", (wmax, hmax))
 
@@ -609,7 +663,7 @@ class ResourcesComponent(CardComponent):
         self.img = crop_to_content(self.img)
 
 
-class PaymentRewardComponent(CardComponent):
+class DeprecatedPRComponent(CardComponent):
     def __init__(self, payment, reward, arrow='SE', activation=None, align='left', **generic):
         CardComponent.__init__(self, **generic)
 
