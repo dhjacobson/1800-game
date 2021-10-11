@@ -9,11 +9,12 @@
         "component_type": "payment-reward",
         "payment": "FFFPPPPC",
         "reward": "icons/prosperity3.png",
-        "arrow": "SE"
+        "arrow": "SE",
+        "reward_height": 160
       },
       {
         "component_type": "text-box",
-        "text": "At the beginning of your turn, discard [[discard_admin]]. If you can't, revoke this policy.\n\nYou may activate cards that require discarding an admin card without discarding an admin card."
+        "text": "At the beginning of your turn, discard an admin card. Then you may move a pop from a province you control to an adjacent province you control.\n\nIf you can't discard an admin card, revoke this policy. You may activate cards that require discarding an admin card without discarding an admin card."
       }
     ]
   },
@@ -25,13 +26,13 @@
     "components": [
       {
         "component_type": "payment-reward",
-        "payment": "CCCC",
+        "payment": "CCCCC",
         "reward": "icons/prosperity3.png",
         "arrow": "SE"
       },
       {
         "component_type": "text-box",
-        "text": "+1[[C]] per turn.\n\nAt the end of your turn, if you did not have a food surplus, you may move a pop from a city to an adjacent countryside you control. If you had a food surplus, you may move a pop from a countryside to an adjacent city you control."
+        "text": "+2[[C]] per turn.\n\nAt the end of your turn, if you did not have a food surplus, you may move a pop from a city to an adjacent countryside you control. If you had a food surplus, you may move a pop from a countryside to an adjacent city you control."
       }
     ]
   },
@@ -45,11 +46,12 @@
         "component_type": "payment-reward",
         "payment": "PPCC",
         "reward": "icons/prosperity2.png",
-        "arrow": "SE"
+        "arrow": "SE",
+        "activation": "discard_admin"
       },
       {
         "component_type": "text-box",
-        "text": "+1[[C]] if you do not have a European trade agreement with a nation whose navy is equal to or larger than yours.\n\nAt the end of your turn, if you did not have a food surplus, you may move a pop from a city to an adjacent countryside you control."
+        "text": "+1[[C]].\n\nGain an additional +1[[C]] if you do not have a European trade agreement with a nation whose navy is equal to or larger than yours.\n\nAt the end of your turn, if you did not have a food surplus, you may move a pop from a city to an adjacent countryside you control."
       }
     ]
   },
@@ -61,14 +63,14 @@
     "components": [
       {
         "component_type": "payment-reward",
-        "payment": "CCCC",
+        "payment": "CCCCC",
         "reward": "icons/prosperity4.png",
         "arrow": "SE",
         "activation": "discard2_admin"
       },
       {
         "component_type": "text-box",
-        "text": "+1[[C]] per turn.\n\nAt the end of your turn, if you did not have a food surplus, you may move a pop from a city to an adjacent countryside you control. If you had a food surplus, you may move a pop from a countryside to an adjacent city you control.\n"
+        "text": "+2[[C]] per turn.\n\nAt the end of your turn, if you did not have a food surplus, you may move a pop from a city to an adjacent countryside you control. If you had a food surplus, you may move a pop from a countryside to an adjacent city you control.\n"
       }
     ]
   },
@@ -108,11 +110,7 @@
       },
       {
         "component_type": "text-box",
-        "text": "Gain +1[[C]] each turn for each 2[[P]] placed on this card."
-      },
-      {
-        "component_type": "text-box",
-        "text": "Note that your total [[C]] from Infrastructure is limited by your infrastructure technology."
+        "text": "Gain +1[[C]] each turn for each 2[[P]] placed on this card.\n\nNote that your total [[C]] from Infrastructure is limited by your infrastructure technology."
       }
     ]
   },
@@ -126,11 +124,7 @@
       },
       {
         "component_type": "text-box",
-        "text": "Gain +1[[C]] each turn for each 1[[P]] placed on this card."
-      },
-      {
-        "component_type": "text-box",
-        "text": "Note that your total [[F]] from Industrial Agraiculture is limited by your agriculture technology."
+        "text": "Gain +1[[C]] each turn for each 1[[P]] placed on this card.\n\nNote that your total [[F]] from Industrial Agriculture is limited by your agriculture technology."
       }
     ]
   },
@@ -172,7 +166,7 @@
       {
         "component_type": "text-box",
         "hmax": 300,
-        "text": "At the end of your turn, if your prosperity is higher than it was at the start of your turn, draw [[draw_admin]].\n\nAt the end of your turn, if your prosperity is lower than it was at the start of your turn, discard [[discard_admin]]"
+        "text": "At the end of your turn, if your prosperity is higher than it was at the start of your turn, draw an admin card.\n\nAt the end of your turn, if your prosperity is lower than it was at the start of your turn, discard an admin card."
       },
       {
         "component_type": "payment-reward",
@@ -211,11 +205,12 @@
       {"text": "When you become the first to discover a technology you may place a [[C]] on each Research Institution that has not been activated this turn.", "default_font_size": 10},
       {
         "component_type": "payment-reward",
+        "reward_height": 280,
         "align": "center",
         "payment": "C",
         "activation": "discard_admin",
         "arrow": "S",
-        "reward": {"text": "Search the policy deck for a technology that has already been discovered.\n\nOR\n\nTake a technology from the auction pool."}
+        "reward": {"text": "Take a technology from the auction pool OR search the development deck for a technology that has already been discovered."}
       }
     ]
   },
@@ -227,7 +222,7 @@
       {"text": "You may place no more than 2[[P]] on a single card on a single turn."},
       {
         "component_type": "payment-reward",
-        "payment": "PPPC",
+        "payment": "PPC",
         "activation": "discard_admin",
         "arrow": "SE",
         "reward": "icons/build_factory.png"
@@ -239,10 +234,10 @@
     "card_type": "policy",
     "card_sub_type": "industry",
     "components": [
-      {"text": "You may place no more than  4[[P]] on a single card on a single turn."},
+      {"text": "You may place no more than 3[[P]] on a single card on a single turn."},
       {
         "component_type": "payment-reward",
-        "payment": "PPPP",
+        "payment": "PPP",
         "activation": "discard2_admin",
         "arrow": "SE",
         "reward": "icons/build_factory.png"
@@ -254,15 +249,13 @@
     "card_type": "policy",
     "card_sub_type": "industry",
     "components": [
-      {"text": "You may place no more than 1[[P]] on a single card on a single turn.", "default_font_size": 42},
       {
         "component_type": "payment-reward",
-        "payment": {"resources": "PPPCC", "resource_max_rows": 3},
-        "activation": "discard_admin",
+        "payment": "PPCC",
         "arrow": "E",
         "reward": "icons/build_factory.png"
       },
-      {"text": "Whenever you would build a factory, you may choose to instead gain [[1Y]] and place a [[C]] on a stock exchange.", "default_font_size": 42}
+      {"text": "You may place no more than 1[[P]] on a single card on a single turn.\n\nWhenever you would build a factory, you may choose to instead gain [[1Y]] and place a [[C]] on a stock exchange.", "default_font_size": 42}
     ]
   },
   "Navy": {
@@ -273,10 +266,10 @@
         "component_type": "payment-reward",
         "align": "center",
         "payment": "PPC",
-        "resource_max_rows": 1,
         "activation": "discard_admin",
         "arrow": "S",
-        "reward": {"text": "Choose a a player with a smaller navy. You may remove that player's trade token from a trade region. That player may declare war on you at the end of the round."}
+        "reward": {"text": "Choose a a player with a smaller navy. You may remove that player's trade token from a trade region. That player may declare war on you at the end of the round."},
+        "reward_height": 400
       }
     ]
   },
@@ -293,32 +286,27 @@
         "arrow": "E",
         "reward": "icons/draw2_admin.png"
       },
-      {
-        "component_type": "payment-reward",
-        "payment": {"img_fpath": "icons/discard_mil.png", "monochrome": "323232", "wmax": 200},
-        "arrow": "E",
-        "reward": "icons/draw2_admin.png"
-      },
-      {"text": "If your prosperity is 0 and an admin card would require you to reduce your prosperity, you may discard a military card instead."}
+      {"text": "During your activation phase, you may discard a miliary card to draw two admin cards.\n\nIf your prosperity is 0 and an admin card would require you to reduce your prosperity, you may discard a military card instead."}
     ]
   },
-  "Public Education": {
+  "Public Schools": {
     "count": 6,
     "card_type": "institution",
     "component_spacer": 80,
     "components": [
       {
-        "component_type": "payment-reward",
-        "payment": {"img_fpath": "icons/discard_admin.png", "wmax": 110, "shape": "circle", "margin": 0},
+        "component_type": "payment-reward-2",
+        "payment": {"img_fpath": "icons/discard_admin.png"},
         "arrow": "E",
-        "reward": {"text": "Move up to two laborers off of factories or farmers into adjacent cities.", "hmax": 500}
+        "reward": {"text": "Move up to two laborers off of factories or farmers into adjacent cities."},
+        "reward_height": 300
       },
       {
         "component_type": "payment-reward",
         "payment": "CC",
         "arrow": "E",
         "activation": "discard_admin",
-        "reward": {"text": "Convert a pop."}
+        "reward": {"text": "Convert a pop.", "default_font_size": 36}
       }
     ]
   },
@@ -328,15 +316,16 @@
     "components": [
       {
         "component_type": "payment-reward",
-        "payment": {"text": "[[discard_admin]]"},
+        "payment": {"img_fpath": "icons/discard_admin.png"},
         "arrow": "E",
-        "reward": {"text": "Draw 2x [[draw_admin]]. Lose one prosperity."}
+        "reward": {"text": "Draw 2 admin cards. Lose one prosperity."}
       },
       {
-        "component_type": "payment-reward",
-        "payment": {"text": "2x [[discard_admin]]"},
+        "component_type": "payment-reward-2",
+        "payment": {"img_fpath": "icons/discard2_admin.png"},
         "arrow": "E",
-        "reward": {"text": "Convert a pop and massacre a pop in provinces you control. Lose one prosperity."}
+        "reward": {"text": "Convert a pop and massacre a pop in provinces you control. Lose one prosperity."},
+        "reward_height": 350
       }
     ]
   },
@@ -344,7 +333,7 @@
     "count": 4,
     "card_type": "institution",
     "components": [
-      {"resources": "CCC"},
+      {"component_type": "resources", "resources": "CCC"},
       {"text": "When you activate a population growth, you may choose to either:\n\nRemove 3[[C]] from this card and gain [[1Y]].\n\nOR\n\nRemove 2[[C]] from this card and place an additional pop in a province you control."}
     ]
   },
@@ -372,57 +361,66 @@
         "payment": "PPPCC",
         "activation": "discard_admin",
         "arrow": "S",
-        "reward": {"text": "[[draw_mil]]x2, then [[discard_mil]]. ", "default_font_size": 80}
+        "reward": {"text": "Draw two miliary cards, then discard one. ", "default_font_size": 80}
       }
     ]
   },
-  "Autocracy": {"count": 0, "card_type": "policy", "card_sub_type": "government", "components": [{"component_type": "payment-reward", "payment": "C", "reward": "icons/draw_admin.png"}]},
-  "Early Industrialization": {"count": 0, "card_type": "policy", "card_sub_type": "industry", "components": [{"text": "You may place no more than 1[[P]] on a single card on a single turn.", "default_font_size": 36}, {"component_type": "payment-reward", "payment": "PPPPC", "reward": "icons/build_factory.png"}]},
-  "Landed Gentry": {"count": 0, "card_type": "policy", "card_sub_type": "economy", "components": [{"text": "At the end of your turn, you may move a pop from a city to an adjacent countryside you control.", "default_font_size": 36}, {"component_type": "payment-reward", "payment": "CCC", "activation": "discard_admin", "reward": "icons/prosperity2.png"}]},
-  "Accelerate Development": {"count": 6, "card_type": "admin", "text": "Play this card at the start of a policy auction. You pick before players who did not play a Jump-the-Line card this round."},
-  "Policy Initiative": {"count": 6, "card_type": "admin", "text": "Play this card when it's your turn to pick a policy card. Pick two cards instead of one, then draw a card from the pool and at it to the draw pile."},
-  "Research Grants": {"count": 6, "card_type": "admin", "text": "Search the policy deck for a technology that has already been discovered.\n\nOR\n\nTake a technology from the auction pool."},
-  "New Administration": {"count": 4, "card_type": "admin", "text": "To play this card, pay 1 prosperity or discard a military card. You may forgo this cost if you have a Republic and your prosperity is 5 or greater\n\nDiscard up to four admin cards. Draw that many admin cards, plus one."},
-  "Free Enterprise": {"count": 4, "card_type": "admin", "text": "To play this card, remove a [[C]] from one of your cards, or move a [[C]] from a Financial Institution to a Stock Exchange.\n\nIf you have a Command Economy or State Ownership, you cannot play this card.\n\nSearch the deck and/or discard pile for one each of: Infrastructure, Industrial Agriculture, Financial Institution. Play one at random."},
-  "Seize Production": {"count": 4, "card_type": "admin", "text": "To play this card, pay\n\n[[P]][[P]][[1Y]].\n\nBuild a factory\n\nOR\n\nDraw a military card"},
-  "Five-Year Plan": {"count": 2, "card_type": "admin", "text": "To play this card, pay [[P]][[P]][[1Y]][[1Y]], and either remove [[F]][[F]][[F]] from your population growth track or sacrifice a pop.\n\nBuild two factories."},
+  "Autocracy": {"count": 6, "card_type": "policy", "card_sub_type": "government", "components": [{"component_type": "payment-reward", "payment": "C", "reward": "icons/draw_admin.png"}]},
+  "Early Industrialization": {"count": 6, "card_type": "policy", "card_sub_type": "industry", "components": [{"text": "You may place no more than 1[[P]] on a single card on a single turn.", "default_font_size": 36}, {"component_type": "payment-reward", "payment": "PPPC", "reward": "icons/build_factory.png"}]},
+  "Landed Gentry": {"count": 6, "card_type": "policy", "card_sub_type": "economy", "components": [{"text": "+1[[C]] per turn. At the end of your turn, you may move a pop from a province you control to an adjacent countryside you control.", "default_font_size": 36}, {"component_type": "payment-reward", "payment": "CCC", "activation": "discard_admin", "reward": "icons/prosperity2.png"}]},
+  "Accelerate Development": {"count": 6, "card_type": "admin", "text": "Play this card at the start of a Policy Auction. You pick before players who did not play an Accelerate Development card this round."},
+  "Policy Initiative": {"count": 6, "card_type": "admin", "text": "To play this card, pay 1 prosperity. Play this card when it's your turn to pick a policy card. Pick two cards instead of one, then draw a card from the deck and add it to the pool."},
+  "Research Grants": {"count": 6, "card_type": "admin", "text": "To play this card, remove a [[C]] from a policy or institution.\n\nTake a technology from the auction pool OR search the development deck for a technology that has already been discovered."},
+  "New Administration": {"count": 4, "card_type": "admin", "text": "To play this card, pay 1 prosperity. You may forgo this cost if you have a Republic and your prosperity is 5 or greater.\n\nDiscard up to four admin cards. Draw that many admin cards, plus one."},
+  "Free Enterprise": {"count": 4, "card_type": "admin", "text": "To play this card, remove a [[C]] from a policy or institution, or move a [[C]] from a Financial Institution to a Stock Exchange.\n\nIf you have a Command Economy or State Ownership policy, you cannot play this card.\n\nSearch the deck and/or discard pile for one each of: Infrastructure, Industrial Agriculture, Financial Institution. Play one at random."},
+  "Seize Production": {"count": 10, "card_type": "admin", "text": "To play this card, pay 1 prosperity and remove [[P]][[P]] from your industry policy.\n\nBuild a factory OR draw a military card"},
+  "Five-Year Plan": {"count": 4, "card_type": "admin", "text": "To play this card, pay 2 prosperity, remove [[P]][[P]] from your industry policy, and sacrifice a pop.\n\nBuild two factories."},
   "Establish Trade Route": {"count": 12, "card_type": "admin", "text": "Overseas Trade: Place one of your trade tokens on an overseas trade route. You gain the benefits of the trade route until your token is removed.\n\nOR\n\nEuropean Trade: Place one of your trade tokens on another player's trade zone, and they do the same in your trade zone. You and that player each gain +1[[C]] per turn as long as you token remains there."},
   "Urbanization": {"count": 6, "card_type": "admin", "text": "Move up to 2 pops from a countryside province to an adjacent city province you control."},
-  "Conscription": {"count": 4, "card_type": "admin", "text": "Recruit up to two regiments."},
-  "Propaganda Campaign": {"count": 8, "card_type": "admin", "text": "To play this card, pay [[C]] or discard a military card.\n\nConvert a pop.\n\nIf you cannot play the prosperity cost for another card, you may discard this card instead."},
-  "Expansionism": {"count": 8, "card_type": "admin", "text": "To play this card, pay 1 prosperity.\n\nSettle: Move a pop from a countryside province you control to an adjacent countryside province (you don't need to control it).\n\nOR\n\nCleanse: Remove up to two pops from a province where you have a regiment. Countries whose pops you removed may declare war on you.\n\nOR\n\nConquest: Choose a neutral province, and discard X military cards, where X is 1 + the number of neutral regiments in the province. Remove the neutral regiments. You may move a regiment from an adjacent province into that province to occupy it."},
+  "Conscription": {"count": 4, "card_type": "admin", "text": "To play this card, pay 2 prosperity.\n\nSearch the Policy Deck/Discard for a Standing Army card and play it."},
+  "Propaganda Campaign": {"count": 8, "card_type": "admin", "text": "To play this card, remove a [[C]] from a policy or institution.\n\nConvert a pop.\n\nIf you cannot pay the prosperity cost for another card, you may discard this card instead."},
+  "Expansionism": {"count": 8, "card_type": "admin", "text": "To play this card, pay 1 prosperity.\n\nSettle: Move a pop from a countryside province you control to an adjacent countryside province (you don't need to control it).\n\nOR\n\nCleanse: Remove up to two pops from a province where you have a regiment.\n\nOR\n\nConquest: Choose a neutral province, and discard X military cards, where X is 1 + the number of neutral regiments in the province. Remove the neutral regiments. You may move a regiment from an adjacent province into that province to occupy it."},
   "Diplomatic Action": {"count": 10, "card_type": "admin", "text": "Retaliate: Play this card when another player interrupts your trade or cleanses your pops. Declare war on that player.\n\nOR\n\nConquest: Choose a neutral province, and discard X military cards, where X is 1 + the number of neutral regiments in the province. Remove the neutral regiments. You may move a regiment from an adjacent province into that province to occupy it.\n\nOR\n\nTrade Technology: Choose a willing player. You each may discover a technology that the other has discovered."},
-  "Espionage": {"count": 6, "card_type": "admin", "text": "To play this card, remove a [[C]] from one of your cards.\n\nSteal Technology: Choose a player. Take all technologies in the auction pool that have been discovered by that player.\n\nOR\n\nSabotage: Remove up to three production or food from a single card belonging to another player.\n\nOR\n\nSupport Rebellion: Choose a province in which the majority of pops are occupied. The occupying player may discard a number of military cards equal to the difference between the number of occupied and non-occupied pops. If they don't remove the occupying regiment from the board."},
-  "Superior Tactics": {"count": 5, "card_type": "military", "components": [{"text": "+1 to all battles"}]},
+  "Espionage": {"count": 6, "card_type": "admin", "text": "To play this card, remove a [[C]] from a policy or institution.\n\nSteal Technology: Choose a player. Take all technologies in the auction pool that have been discovered by that player.\n\nOR\n\nSabotage: Remove up to three production or food from a single card belonging to another player.\n\nOR\n\nSupport Rebellion: Choose a province in which the majority of pops are occupied. The occupying player may discard a number of military cards equal to the difference between the number of occupied and non-occupied pops in the province. If they don't remove the occupying regiment from the board."},
+  "Superior Tactics": {"count": 5, "card_type": "military", "components": [{"text": "+1 to all battles."}]},
   "Expert Maneuver": {"count": 15, "card_type": "military", "components": [{"text": "Choose a province. +1 to battles in that province."}]},
-  "Reinforcements": {"count": 10, "card_type": "military", "components": [{"text": "Conscript up to two regiments. You may move one of those regiments to an adjacent province that does not contain an enemy regiment."}]},
-  "Strategic Repositioning": {"count": 10, "card_type": "military", "components": [{"text":   "Move two regiment from a province without a battle to another province without a battle that is not controlled by an enemy"}]},
+  "Reinforcements": {"count": 10, "card_type": "military", "components": [{"text": "Conscript a regiment in a province you control. You may move it to an adjacent province that does not contain an enemy regiment."}]},
+  "Strategic Repositioning": {"count": 10, "card_type": "military", "components": [{"text":   "Move two regiment from a province without a battle to another province without a battle that is not controlled by an enemy."}]},
   "Magnificent Maneuver": {"count": 5, "card_type": "military", "components": [{"text": "Choose a province. +2 to battles in that province."}]},
   "Military Tradition": {"count": 3, "card_type": "military", "components": [{"text": "Gain +1 to all battles. \n\nWhen you play this card, discard any other Military Tradition or Naval Tradition cards that you have in play.\n\nLeave this card in play. It remains in effect until the end of the game."}]},
-  "Naval Support": {"count": 10, "card_type": "military", "components": [{"text": "You may move a regiment from a coastal province to another coastal province.\n\nIf your coalition has a larger navy:\n+1 to a coastal battle\nOR\n+2 to a battle in which someone is supporting across a straight"}]},
-  "Naval Tradition": {"count": 3, "card_type": "military", "components": [{"text": "If your coalition has a larger navy:\n+1 to coastal battles\nOR\n+2 to a battles in which someone is supporting across a straight\n\nWhen you play this card, discard any other Military Tradition or Naval Tradition cards that you have in play.\n\nLeave this card in play. It remains in effect until the end of the game."}]},
-  "Granaries": {"count": 0, "card_type": "technology", "card_sub_type": "storage", "components": [{"text": "You may not place more than 1[[F]] on population growth on a each turn.\n\nWhen your food balance is negative, lose 1 prosperity."}, {"component_type": "payment-reward", "payment": {"resources": "FFF", "resource_max_rows": 3}, "arrow": "E", "reward": {"text": "Add a pop to any province you control."}}]},
-  "Cast-Iron Plough": {"count": 0, "card_type": "technology", "card_sub_type": "agriculture", "components": [{"text": "Your total [[F]] from Industrial Agriculture institutions cannot exceed the number of provinces you control with at least 2 farmers."}]},
-  "Roads": {"count": 0, "card_type": "technology", "card_sub_type": "transportation", "components": [{"text": "You cannot collect [[C]] from Infrastructure institutions.\n\nAt the end of your turn, you may move 1 regiment from a province you control to an adjacent province you control."}]},
-  "Muskets": {"count": 0, "card_type": "technology", "card_sub_type": "military", "components": [{"text": "+1 to all battles."}]},
-  "Postal Service": {"count": 0, "card_type": "technology", "card_sub_type": "communications", "components": [{"text": "Your Mobility is 3.\n\nYou may not have more than 2 trade routes."}]},
-  "Canning": {"count": 6, "card_type": "technology", "card_sub_type": "storage", "components": [{"text": "Requires 3 factories.\n\nYou may not place more than 2[[F]] on population growth on a each turn.\n\nWhen you have a [[F]]-deficit of 2 or more, lose [[1Y]]."}]},
-  "Steel Plough": {"count": 6, "card_type": "technology", "card_sub_type": "agriculture", "components": [{"text": "Requires 1 Industrial Agriculture institutions.\n\nYour total [[F]] from Industrial Agriculture institutions cannot exceed the number of provinces you control with at least 1 farmer."}]},
-  "Macadam Roads": {"count": 6, "card_type": "technology", "card_sub_type": "transportation", "components": [{"text": "Requires 2 bourgeois.\n\nYour total output from Infrastructure institutions cannot exceed 1[[C]] per city with at least 2 bourgeois pops.\n\nAt the end of your turn, you may move up to 2 regiments from a province you control to an adjacent province you control."}]},
-  "Bolt-Action Rifle": {"count": 6, "card_type": "technology", "card_sub_type": "military", "components": [{"text": "Requires 1 Army institution.\n\n+2 to all battles."}]},
-  "Telegraph": {"count": 6, "card_type": "technology", "card_sub_type": "communications", "components": [{"text": "Requires 1 trade route. Your Mobility is 4.\n\nYou may not have more than 4 trade routes."}]},
-  "Vapor-Compression Refrigeration": {"count": 6, "card_type": "technology", "card_sub_type": "storage", "components": [{"text": "Requires 5 factories.\n\nYou may not place more than 3[[F]] on population growth on a each turn.\n\nWhen you have a [[F]]-deficit of 3 or more, lose [[1Y]]."}]},
-  "Disc Plough": {"count": 6, "card_type": "technology", "card_sub_type": "agriculture", "components": [{"text": "Requires 2 Industrial Agriculture institutions.\n\nYour total [[F]] from Industrial Agriculture institutions cannot exceed 2[[F]] per province you control with at least 1 farmer."}]},
-  "Steam Engine": {"count": 6, "card_type": "technology", "card_sub_type": "transportation", "components": [{"text": "Requires 4 bourgeois.\n\nYour total output from Infrastructure institutions cannot exceed 1[[C]] per city with at least 2 bourgeois pops, plus 1[[C]] per city with at least 2 bourgeois pops.\n\nAt the end of your turn, you may move up to 3 regiments from a province you control to an adjacent province you control."}]},
-  "Armstrong Gun": {"count": 6, "card_type": "technology", "card_sub_type": "military", "components": [{"text": "Requires 2 Army institutions.\n\n+2 to all battles."}]},
-  "Synthesized Ammonia": {"count": 6, "card_type": "technology", "card_sub_type": "agriculture", "components": [{"text": "Requires 3 Industrial Agriculture institutions.\n\nYour total [[F]] from Industrial Agriculture institutions cannot exceed 2[[F]] per province you control with at least 1 farmer."}]},
-  "Automobile": {"count": 6, "card_type": "technology", "card_sub_type": "transportation", "components": [{"text": "Requires 6 bourgeois.\n\nYour total output from Infrastructure institutions cannot exceed 1[[C]] per city with at least 2 bourgeois, plus 1[[C]] per city with at least 4 bourgeois, plus 1[[c]] per city with at least 6 bourgeois.\n\nAt the end of your turn, you may move up to 4 regiments from a province you control to an adjacent province you control."}]},
-  "Maxim Machine Gun": {"count": 6, "card_type": "technology", "card_sub_type": "military", "components": [{"text": "Requires 3 Army institutions.\n\n+3 to all battles."}]},
-  "Telephone": {"count": 6, "card_type": "technology", "card_sub_type": "communications", "components": [{"text": "Requires 3 trade routes. Your Mobility is 5.\n\nYou may not have more than 6 trade routes."}]},
+  "Naval Support": {"count": 10, "card_type": "military", "components": [{"text": "You may move a regiment from a coastal province to another coastal province.\n\nIf your coalition has a larger navy: +1 to a coastal battle OR +2 to a battle in which someone is supporting across a straight."}]},
+  "Naval Tradition": {"count": 3, "card_type": "military", "components": [{"text": "If your coalition has a larger navy:\n+1 to coastal battles, and an additional +1 to a battles in which someone is supporting across a straight\n\nWhen you play this card, discard any other Military Tradition or Naval Tradition cards that you have in play.\n\nLeave this card in play. It remains in effect until the end of the game."}]},
+  "Granaries": {"count": 6, "card_type": "technology", "card_sub_type": "storage", "components": [{"text": "You may not place more than 1[[F]] on this card on a single turn.\n\nWhen you have a [[F]]-deficity, lose 1 prosperity."}, {"component_type": "payment-reward", "payment": {"resources": "FFF", "resource_max_rows": 3}, "arrow": "E", "reward": {"text": "Add a pop to any province you control."}}]},
+  "Cast-Iron Plough": {"count": 6, "card_type": "technology", "card_sub_type": "agriculture", "components": [{"text": "Your total [[F]] from Industrial Agriculture institutions cannot exceed the number of provinces you control with at least 2 farmers."}]},
+  "Roads": {"count": 6, "card_type": "technology", "card_sub_type": "transportation", "components": [{"text": "You cannot collect [[C]] from Infrastructure institutions.\n\nAt the end of your turn, you may move 1 regiment from a province you control to an adjacent province you control."}]},
+  "Muskets": {"count": 6, "card_type": "technology", "card_sub_type": "military", "components": [{"text": "+0 to all battles."}]},
+  "Postal Service": {"count": 6, "card_type": "technology", "card_sub_type": "communications", "components": [{"text": "Your Mobility is 3.\n\nYou may not have more than 2 trade routes."}]},
+  "Canning": {"count": 6, "card_type": "technology", "card_sub_type": "storage", "era": "I", "components": [{"text": "Requires 3 factories.\n\nYou may not place more than 2[[F]] on this card on a single turn.\n\nWhen you have a [[F]]-deficit of 2 or more, lose 1 prosperity."}, {"component_type": "payment-reward", "payment": {"resources": "FFF", "resource_max_rows": 3}, "arrow": "E", "reward": {"text": "Add a pop to any province you control."}}]},
+  "Steel Plough": {"count": 6, "card_type": "technology", "card_sub_type": "agriculture", "era": "I", "components": [{"text": "Requires 1 Industrial Agriculture institutions.\n\nYour total [[F]] from Industrial Agriculture institutions cannot exceed 2[[F]] you control with at least 2 farmers."}]},
+  "Macadam Roads": {"count": 6, "card_type": "technology", "card_sub_type": "transportation", "era": "I", "components": [{"text": "Requires 2 bourgeois.\n\nYour total output from Infrastructure institutions cannot exceed 1[[C]] per city with at least 2 bourgeois pops.\n\nAt the end of your turn, you may move up to 2 regiments from a province you control to an adjacent province you control."}]},
+  "Bolt-Action Rifle": {"count": 6, "card_type": "technology", "card_sub_type": "military", "era": "I", "components": [{"text": "Requires 1 Army institution.\n\n+1 to all battles."}]},
+  "Telegraph": {"count": 6, "card_type": "technology", "card_sub_type": "communications", "era": "I", "components": [{"text": "Requires 1 trade route. Your Mobility is 3.\n\nYou may not have more than 2 trade routes."}]},
+  "Vapor-Compression Refrigeration": {"count": 6, "card_type": "technology", "card_sub_type": "storage", "era": "II", "flavor_image": {"fpath": "images/refrigerator2_trimmed.jpg", "stack": [1, 2]}, "components": [{"text": "Requires 5 factories.\n\nYou may not place more than 3[[F]] on this card on a single turn.\n\nWhen you have a [[F]]-deficit of 3 or more, lose 1 prosperity."}, {"component_type": "payment-reward", "payment": {"resources": "FFF", "resource_max_rows": 3}, "arrow": "E", "reward": {"text": "Add a pop to any province you control."}}]},
+  "Disc Plough": {"count": 6, "card_type": "technology", "card_sub_type": "agriculture", "era": "II", "components": [{"text": "Requires 2 Industrial Agriculture institutions.\n\nYour total [[F]] from Industrial Agriculture institutions cannot exceed 2[[F]] per province you control with at least 1 farmer."}]},
+  "Steam Engine": {"count": 6, "card_type": "technology", "card_sub_type": "transportation", "era": "II", "components": [{"text": "Requires 4 bourgeois.\n\nYour total output from Infrastructure institutions cannot exceed 1[[C]] per city with at least 2 bourgeois pops, plus 1[[C]] per city with at least 2 bourgeois pops.\n\nAt the end of your turn, you may move up to 3 regiments from a province you control to an adjacent province you control."}]},
+  "Armstrong Gun": {"count": 6, "card_type": "technology", "card_sub_type": "military", "era": "II", "components": [{"text": "Requires 2 Army institutions.\n\n+2 to all battles."}]},
+  "Telephone": {"count": 6, "card_type": "technology", "card_sub_type": "communications", "era": "II", "components": [{"text": "Requires 3 trade routes.\n\nYour Mobility is 4.\n\nYou may not have more than 4 trade routes."}]},
+  "Freon Refrigeration": {"count": 6, "card_type": "technology", "card_sub_type": "storage", "era": "II", "components": [{"text": "Requires 7 factories.\n\nYou may not place more than 4[[F]] on this card on a single turn. You may place more than 3[[F]] on this card, but when you activate it, remove only 3[[F]].\n\nWhen you have a [[F]]-deficit of 3 or more, lose 1 prosperity."}, {"component_type": "payment-reward", "payment": {"resources": "FFF", "resource_max_rows": 3}, "arrow": "E", "reward": {"text": "Add a pop to any province you control."}}]},
+  "Synthesized Ammonia": {"count": 6, "card_type": "technology", "card_sub_type": "agriculture", "era": "III", "components": [{"text": "Requires 3 Industrial Agriculture institutions.\n\nYour total [[F]] from Industrial Agriculture institutions cannot exceed 2[[F]] per province you control with at least 1 farmer.\n\nGain an additional [[F]] (not limited by your farmers) for each Industrial Agriculture institution with at least 4[[P]]."}]},
+  "Automobile": {"count": 6, "card_type": "technology", "card_sub_type": "transportation", "era": "III", "components": [{"text": "Requires 6 bourgeois.\n\nYour total output from Infrastructure institutions cannot exceed 1[[C]] per city with at least 2 bourgeois, plus 1[[C]] per city with at least 4 bourgeois, plus 1[[c]] per city with at least 6 bourgeois.\n\nAt the end of your turn, you may move up to 4 regiments from a province you control to an adjacent province you control."}]},
+  "Maxim Machine Gun": {"count": 6, "card_type": "technology", "card_sub_type": "military", "era": "III", "components": [{"text": "Requires 3 Army institutions.\n\n+3 to all battles."}]},
+  "Radio": {"count": 6, "card_type": "technology", "card_sub_type": "communications", "era": "III", "components": [{"text": "Requires 3 trade routes.\n\nYour Mobility is 5.\n\nYou may not have more than 6 trade routes."}]},
   "Science": {"count": 1, "card_type": "ambition", "text": "+2 victory points for each Research Institution you control. +1 victory point for each technology type for which you have all technologies."},
   "Culture": {"count": 1, "card_type": "ambition", "text": "+2 victory points for each Artists' Society and Great Works institution."},
-  "Conquest": {"count": 1, "card_type": "ambition", "text": "+1 victory point for each province you control beyond 6 (e.g. 2 points if you control 8 provinces; 4 points if you control 10)\n\nAt the end of each turn, you may declare war on any player who controls a province adjacent to a province you control. When you do, turn this card face up.."},
+  "Conquest": {"count": 1, "card_type": "ambition", "text": "+1 victory point for each province you control beyond 6 (e.g. 2 points if you control 8 provinces; 4 points if you control 10)\n\nAt the end of each turn, you may declare war on any player who controls a province adjacent to a province you control. When you do, turn this card face up."},
   "Wealth": {"count": 1, "card_type": "ambition", "text": "+1 victory points for each [[C]] on a Financial Institution or Stock Exchange you control."},
   "Growth": {"count": 1, "card_type": "ambition", "text": "+1 victory point for every 3 pops in your nation beyond 12 (e.g. 1 point for 15 pops, 2 points for 18 pops, 5 points for 27 pops)."},
-  "Welfare": {"count": 1, "card_type": "ambition", "text": "+1 victory point for each Hospitals or Public Schools. +2 victory points if your prosperity is greater than the number of pops in your nation."}
+  "Welfare": {"count": 1, "card_type": "ambition", "text": "+1 victory point for each Public Schools or Hospitals institution. +2 victory points if your prosperity is greater than the number of pops in your nation."},
+  "Unrest Overseas": {"count": 1, "card_type": "event", "text": "For each overseas trade route, discard a military card or lose that trade route."},
+  "Unrest at Home": {"count": 1, "card_type": "event", "text": "If your prosperity is 0, sacrifice a pop.\n\nFor each province you control with occupied pops, discard a military card or sacrifice the occupying regiment."},
+  "Liberal Revolution": {"count": 1, "card_type": "event", "text": "If your government is not a Republic and half or less of all players have a Republic, you may choose to discard 2 military cards.\n\nIf you don't, revoke all policies, discard all admin cards, search the development deck and discard pile for a Republic card, and play it."},
+  "Rising Fascism": {"count": 1, "card_type": "event", "text": "If your government is not a Police State and half or less of all players have a Police State, you may choose to discard 3 admin cards.\n\nIf you don't, revoke all policies, discard all admin cards, search the development deck and discard pile for a Police State card, and play it."},
+  "Flooding": {"count": 2, "card_type": "event", "text": "Remove [[P]] from each of your institutions."},
+  "Great War": {"count": 1, "card_type": "event", "text": "At the end of the round, all players fight a war."},
+  "Migration": {"count": 1, "card_type": "event", "text": "At the beginning of your turn, you may move one of your pops to an adjacent province. (You may move a pop from or to a province you don't control.)"}
 }
