@@ -87,6 +87,7 @@ During each round, each player gets to play their turn (step 3 above). Each play
   - Collect commerce tokens as instructed by your Development Cards and trade routes. The most common sources of commerce are Economic Policies, Infrastructure, Stock Exchanges, European trade routes, and overseas trade route monopolies. For European trade routes, collect one commerce per turn for each trade route. For overseas trade routes, collect one commerce per turn for each trade route that is not shared with any other players. This is called a trade route monopoly.
 2. Place resources on Development Cards. You may only place resources on Development Cards with slots for that specific resource type (indicated by colored squares featuring wheat, a hammer, or coins), and you cannot place more of a resource on a card than there are slots for that resource.
 3. Activate Development Cards. Development cards with arrows on them can be activated. Some cards have a cost to activation, like discarding an Admin Card. When you activate a card, you get the indicated reward immediately. Note that each Development card can be activated only once each turn.
+4. End of turn: move pops and regiments. If your Transportation Technology or Economic Policy permits you to move regiments or pops at the end of your turn, you may do so at this time.
 
 #### Wars
 While there are many more subtle ways to gain advantageous over other nations, war is a decisive way to acquire new territory or punish enemies for their transgressions.
