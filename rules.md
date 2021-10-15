@@ -90,4 +90,18 @@ During each round, each player gets to play their turn (step 3 above). Each play
 4. End of turn: move pops and regiments. If your Transportation Technology or Economic Policy permits you to move regiments or pops at the end of your turn, you may do so at this time.
 
 #### Wars
-While there are many more subtle ways to gain advantageous over other nations, war is a decisive way to acquire new territory or punish enemies for their transgressions.
+While there are many more subtle approaches to gain advantageous over other nations, war is a decisive way to acquire new territory or punish enemies for their transgressions. There are three ways a way can be initiated: by a player with the Conquest ambition, by a Great War global event, or by a player using a Diplomatic Action card in repsonse to an aggressive action by another player.
+
+During a war, players involved in a war take turns making actions, starting with the player to the left of the dealer. Each player may make a number of actions determined by their communication technology. An action in war can be any one of the following:
+* **Move a regiment to an adjacent province.** You may not move a regiment onto a province with a regiment belonging to you or to a nation that is not involved in the war. You may, however, move your regiment onto a province in which there is one regiment belonging to another player involved in the war. If you do this, a battle is initiated. You may not move a regiment involved in a battle. At the end of the war, the battle will be resolved.
+* **Draft a conscripted regiment.** Place a regiment piece on top of one of your pops. That regiment cannot move, but otherwise functions as a normal regiment. While the regiment is conscripted, the pop consumes one food and does not produce resources.
+* **Play a Military Card.** If the card you play asks you to specify a province, use a player token to mark the province you specified.
+* **Pass your action.** Do nothing. You may still use future actions.
+
+When a player runs out of actions, if other players still have actions, that player must pass their turn while other players continue to play in the same order. After every player involved in the war has used all of their actions, resolve any battles that have been initiated as follows
+1. Each player calculates their battle score as follows:
+  * Count the number of supporting regiments, where a supporting regiment is defined as a regiment that is adjacent to the battle but is *not* adjacent to any other battles involving your regiments.
+  * Add any bonuses from you Military Technology
+  * Add any bonuses from Military Cards
+2. The player with the highest score wins the battle. If both players have the same score, the player with the most pops in the province (not including regiments) wins. If both players have the same score and the same number of pops in the province, the player who took their action first in the war wins.
+3. The losing regiment is removed from the board. If it was a conscripted regiment, remove the conscripted pop as well. Then, the losing player draws a military card.
