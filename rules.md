@@ -44,6 +44,14 @@ With one exception, control of a province is determined by the number of pops th
 
 The exception is if there is a regiment in the province. Regiments are represented by colored cone pieces. A single province may only have one regiment in it, and any province with a regiment is controlled by the nation the regiment belongs to. In this case, pops in the province that do not belong to the controlling nation are called "occupied pops". Occupied pops and minority pops still produce resources for you, but you do not gain the benefits of controlling the proavince, and beware -- they may be vulnerable to conversion or extermination.
 
+### Improvements
+Provinces can be augmented with several different types of improvements. Once an improvement is placed on a province, it remains there for the rest of the game, unless it is explicitly destroyed by a player action. Cities can support 5 improvements, while countrysides can support two. If a province is at it's maximum number of supported improvements, a player who wishes to build a new improvement on that province may destroy an existing improvement. 
+
+There are four types of improvements:
+- **Factories** provide +1 production per turn when worked by a pop. Factories may only be placed in cities.
+- **Farms** provide +1 food per turn when worked by a pop. Agricultural technology may allow one pop to work more than one farm. Farms may only be placed in countrysides.
+- **Markets** provide +1 commerce for every two pops working on a market in a city. The number of pops that can work on a single market is limited by your infrastructure technology. In addition to producing commerce directly, markets contribute to the size of your "market networks". Markets may be placed in either cities or countrysides, but in countrysides they do not produce any commerce; the only purpose of markets in countrysides is to expand your network. 
+
 ### Cards
 There are five kinds of cards in 1800, each with it's own unique card-back: Admin Cards, Military Cards, Development Cards, Global Events, and National Ambitions.
 
